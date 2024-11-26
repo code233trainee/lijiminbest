@@ -1,0 +1,9 @@
+*.exe
+*.pdb
+*.ilk
+*.obj
+*.zip
+.cph
+VS_Tetris/
+visualstudio/
+VisualStudio2012

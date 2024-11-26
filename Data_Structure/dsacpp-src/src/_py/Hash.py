@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+# -*- coding: gbk -*-
+#
+# Example of Python dictionary (hashtable)
+#
+beauty = dict({	# declare and initialize a dictionary object
+   "³ÁÓã":"Î÷Ê©",
+   "ÂäÑã":"ÕÑ¾ı",
+   "±ÕÔÂ":"õõ²õ",
+   "Ğß»¨":"Óñ»·"
+})
+for (alias, name) in beauty.items() :
+   print( " = (", alias,  ":", name, ")" )
+
+beauty["ºìÑÕ"] = "Ô²Ô²"
+for (alias, name) in beauty.items() :
+   print( " + (", alias,  ":", name, ")" )
+
+for (alias, name) in sorted( beauty.items() ) :
+   print( " v (", alias,  ":", name, ")" )
+
+for alias in sorted( beauty.keys(), reverse = True ):
+   print( " ^ (", alias,  ":", beauty[alias], ")" )
