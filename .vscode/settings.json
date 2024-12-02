@@ -85,7 +85,17 @@
         "xlocbuf": "cpp",
         "xlocinfo": "cpp",
         "xlocmes": "cpp",
-        "xloctime": "cpp"
+        "xloctime": "cpp",
+        "cfenv": "cpp",
+        "cinttypes": "cpp",
+        "csetjmp": "cpp",
+        "csignal": "cpp",
+        "cwctype": "cpp",
+        "coroutine": "cpp",
+        "resumable": "cpp",
+        "scoped_allocator": "cpp",
+        "typeindex": "cpp",
+        "valarray": "cpp"
     },
     "cmake.ignoreCMakeListsMissing": true
 }

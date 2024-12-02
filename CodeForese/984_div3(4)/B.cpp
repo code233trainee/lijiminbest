@@ -93,6 +93,7 @@ void solve()
         v[a] += b;
     }
     sort(v.begin(), v.end(), std::greater<int>());
+    //accumulate函数定义累加，前两个函数接受范围，第三个参数定义累加的初始值
     int ans = accumulate(v.begin(), v.begin() + n, 0);
     cout << ans << endl;
 }
