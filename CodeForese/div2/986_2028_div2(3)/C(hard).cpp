@@ -43,7 +43,6 @@ void solve()
 }
 int main()
 {
-    //高效处理输入输出
     ios::sync_with_stdio(false);
 	cin.tie(nullptr);
     
