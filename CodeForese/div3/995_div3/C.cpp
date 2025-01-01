@@ -1,15 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int N = 3e5+5;
 void solve()
 {
     int n, m, k;
     cin >> n >> m >> k;
-    vector<int> a(m+1);
+    vector<int> a(n+1), q(n+1);
     for(int i = 1; i <= m; i++)
     {
         cin >> a[i];
     }
-    vector<int> q(m+1);
     for(int i = 1; i <= k; i++)
     {
         int k;
