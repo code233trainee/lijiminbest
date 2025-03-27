@@ -2,8 +2,13 @@
 using namespace std;
 void solve()
 {
-    int n;
-    
+    string s;
+    cin >> s;
+    if (s.length() >= 2) 
+    {
+        s.replace(s.length() - 2, 2, "i");
+    }
+    cout << s << "\n";
 }
 int main()
 {

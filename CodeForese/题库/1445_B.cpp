@@ -2,8 +2,9 @@
 using namespace std;
 void solve()
 {
-    int n;
-    
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+    cout << max(a + b, c + d) << '\n';
 }
 int main()
 {
