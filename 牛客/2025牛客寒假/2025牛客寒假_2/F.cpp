@@ -3,18 +3,14 @@ using namespace std;
 using ll = long long;
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    vector<int> v(n+1), w(n+1);
-    for(int i = 1; i <= n; i++)
-    {
-        cin >> v[i] >> w[i];
-    }
-
+    //还是那个公式：对于任意的两个二进制数，都有a+b = a^b + 2(a&b)
+    ll l, r;
+    cin >> l >> r;
+    cout << r - l + 1 << "\n";
 }
 int main()
 {
-    int t = 1;
+    ll t;
     cin >> t;
     while(t--)
     {

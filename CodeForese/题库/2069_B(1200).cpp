@@ -1,15 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
 void solve()
 {
-    ll l, r;
-    cin >> l >> r;
     
 }
 int main()
 {
-    ll t;
+    int t;
     cin >> t;
     while(t--)
     {
