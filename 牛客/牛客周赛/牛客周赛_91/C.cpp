@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 void solve()
 {
     int n;
@@ -9,14 +10,21 @@ void solve()
     {
         cin >> a[i];
     }
-    //
+    int mx = 0;
+    int res = 0;
+    for(auto &z : a)
+    {
+        if(mx > z)
+        {
+            res = max(res, mx + z);
+        }
+        mx = max(mx, z);
+    }
+    cout << mx << endl;
 }
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    
-    int t = 1;
+    int t;
     cin >> t;
     while(t--)
     {

@@ -1,0 +1,160 @@
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import urllib.request
+import os
+%matplotlib inline
+
+data_url = "http://hbiostat.org/data/repo/titanic3.xls"
+data_file_path = "C:/Users/li/Desktop/课程/机器视觉/titanic3.xls"
+if not os.path.isfile(data_file_path):
+    result = urllib.request.urlretrieve(data_url, data_file_path)
+    print("downloaded:", result)
+else:
+    print(data_file_path, 'data file already exists.')
+
+df_data = pd.read_excel(data_file_path)
+
+df_data.describe()
+
+selected_cols = ['survived', 'name', 'pclass', 'sex', 'age', 'sibsp', 'parch', 'fare', 'embarked']
+selected_df_data = df_data[selected_cols]
+
+selected_df_data
+
+selected_df_data.isnull()
+
+selected_df_data.isnull().any()
+
+selected_df_data.isnull().sum()
+
+selected_df_data[selected_df_data.isnull().values == True]
+
+# age_mean_value = selected_df_data['age'].mean()
+# selected_df_data['age'] = selected_df_data['age'].fillna(age_mean_value)
+# fare_mean_value = selected_df_data['fare'].mean()
+# selected_df_data['fare'] = selected_df_data['fare'].fillna(fare_mean_value)
+# selected_df_data['embarked'] = selected_df_data['embarked'].fillna('S')
+
+# selected_df_data['sex'] = selected_df_data['sex'].map({'female':0, 'male':1}).astype(int)
+# selected_df_data['embarked'] = selected_df_data['embarked'].map({'C':0, 'Q':1, 'S':2}).astype(int)
+
+# selected_df_data[:3]
+
+# selected_df_data = selected_df_data.drop(['name'], axis=1)
+
+# selected_df_data[:3]
+
+# ndarray_data = selected_df_data.values
+# features = ndarray_data[:, 1:]
+# label = ndarray_data[:, 0]
+
+# features[:3]
+
+# label[:3]
+
+from sklearn import preprocessing
+# minmax_scale = preprocessing.MinMaxScaler(feature_range=(0, 1))
+# norm_features = minmax_scale.fit_transform(features)
+
+# norm_features[:3]
+
+def prepare_data(df_data):
+    df = df_data.drop(['name'], axis = 1)
+    age_mean = df['age'].mean()
+    df['age'] = df['age'].fillna(age_mean)
+    fare_mean = df['fare'].mean()
+    df['fare'] = df['fare'].fillna(fare_mean)
+    df['sex'] = df['sex'].map({'female':0, 'male':1}).astype(int)
+    df['embarked'] = df['embarked'].fillna('S')
+    df['embarked'] = df['embarked'].map({'C':0, 'Q':1, 'S':2}).astype(int)
+    
+    ndarray_data = df.values
+    
+    features = ndarray_data[:,1:]
+    label = ndarray_data[:,0]
+    
+    minmax_scale = preprocessing.MinMaxScaler(feature_range = (0, 1))
+    norm_features = minmax_scale.fit_transform(features)
+    
+    return norm_features, label
+
+shuffled_df_data = selected_df_data.sample(frac=1)
+
+x_data, y_data = prepare_data(shuffled_df_data)
+
+train_size = int(len(x_data) * 0.8)
+x_train = x_data[:train_size]
+y_train = y_data[:train_size]
+x_test = x_data[train_size:]
+y_test = y_data[train_size:]
+
+model = tf.keras.models.Sequential()
+
+model.add(tf.keras.layers.Dense(units = 64,
+                               input_dim = 7,
+                               kernel_initializer = 'uniform',
+                               bias_initializer = 'zeros',
+                               activation = 'relu'))
+
+model.add(tf.keras.layers.Dense(units = 32,
+                               activation = 'sigmoid'))
+
+model.add(tf.keras.layers.Dense(units = 1,
+                               activation = 'sigmoid'))
+
+model.summary()
+
+model.compile(optinizer = tf.keras.optimizers.Adam(0.003),
+             loss='binary_crossentropy',
+             metrics=['accuracy'])
+
+train_history = model.fit(x = x_train,
+                         y = y_train,
+                         validation_split = 0.2,
+                         epochs = 100,
+                         batch_size = 40,
+                         verbose = 2)
+
+train_history.history
+
+train_history.history.keys()
+
+def visu_train_history(train_history, train_metric, validation_metric):
+    plt.plot(train_history.history[train_metric])
+    plt.plot(train_history.history[validation_metric])
+    plt.title('Train History')
+    plt.ylabel(train_metric)
+    plt.xlabel('epoch')
+    plt.legend(['train', 'validation'], loc = 'upper left')
+    plt.show()
+
+visu_train_history(train_history, 'accuracy', 'val_accuracy')
+
+visu_train_history(train_history,'loss', 'val_loss')
+
+evaluate_result = model.evaluate(x=x_test, y=y_test)
+
+evaluate_result
+
+model.metrics_names
+
+Jack_info = [0, 'Jack', 3, 'male', 23, 1, 0, 5.0000, 'S']
+Rose_info = [1, 'Rose', 1, 'female', 20, 1, 0, 100.0000, 'S']
+
+new_passenger_pd = pd.DataFrame([Jack_info, Rose_info], columns = selected_cols)
+
+all_passenger_pd = selected_df_data.append(new_passenger_pd)
+
+all_passenger_pd[-3:]
+
+x_features, y_label = prepare_data(all_passenger_pd)
+
+surv_probability = model.predict(x_features)
+
+surv_probability[:5]
+
+all_passenger_pd.insert(len(all_passenger_pd.columns), 'surv_probability', surv_probability)
+
+all_passenger_pd[-5:]
