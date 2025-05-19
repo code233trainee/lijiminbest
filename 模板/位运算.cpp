@@ -15,6 +15,7 @@ using namespace std;
 // 或
 // a | b >= max(a, b);
 
+// (a & b) + (a | b) = a+b
 int main()
 {
     return 0;
