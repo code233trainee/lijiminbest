@@ -29,6 +29,21 @@ ll quickPower(ll a, ll b)
 	}
 	return ans;
 }
+ll ksm(ll a, ll b, ll p)
+{
+	ll ans = 1;
+	a %= p;
+	while(b)
+	{
+		if(b & 1)
+		{
+			ans = (ans * a) % p;
+		}
+		b >>= 1;
+		a = (a * a) % p;
+	}
+	return ans % p;
+}
 int main()
 {
     return 0;

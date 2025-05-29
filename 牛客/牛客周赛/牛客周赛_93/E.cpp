@@ -1,67 +1,60 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
-static const int MOD = 1e9+7;
-
+static const int mod = 1e9+7;
+ll ksm(ll a, ll b, ll p)
+{
+	ll ans = 1;
+	a %= p;
+	while(b)
+	{
+		if(b & 1)
+		{
+			ans = (ans * a) % p;
+		}
+		b >>= 1;
+		a = (a * a) % p;
+	}
+	return ans % p;
+}
 int main(){
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
     int n;
     cin >> n;
-    vector<int> a(n);
-    for(int i = 0; i < n; i++){
-        cin >> a[i];
+    vector<int> cnt(n+1);
+    for(int i = 1; i <= n; i++)
+    {
+        int x;
+        cin >> x;
+        cnt[x]++;
     }
 
-    // 1) 统计频次
-    vector<int> cnt(n+1, 0);
-    for(int v : a){
-        cnt[v]++;
-    }
-
-    // 2) 预计算 2^i mod
-    vector<ll> pw(n+1, 1);
-    for(int i = 1; i <= n; i++){
-        pw[i] = (pw[i-1] * 2) % MOD;
-    }
-
-    // 3) 计算 f[v] = 2^{cnt[v]} - 1
-    vector<ll> f(n+1, 0);
-    for(int v = 0; v <= n; v++){
-        if(cnt[v] > 0){
-            f[v] = (pw[cnt[v]] - 1 + MOD) % MOD;
+    ll ans = 0;
+    ll s = 1;
+    // 从0开始，包含了全0的情况
+    // 计算
+    for(int i = 0; i <= n; i++)
+    {
+        if(cnt[i] == 0)
+        {
+            break;
         }
-        // 否则 f[v]=0 保持
+        // 使用减法要记得防止负数(加上mod再模一次)
+        s *= ksm(2ll, cnt[i], mod) - 1 + mod;
+        s %= mod;
+        ans += s;
+        ans %= mod;
     }
 
-    // 4) S_const = 所有常量子序列数量之和
-    ll S_const = 0;
-    for(int v = 0; v <= n; v++){
-        S_const = (S_const + f[v]) % MOD;
+    // 这里从1开始，防止重复计算全0的情况
+    // 计算单个数字的情况
+    for(int i = 1; i <= n; i++)
+    {
+        ans += ksm(2ll, cnt[i], mod) - 1 + mod;
+        ans %= mod;
     }
-
-    // 5) 找最大的 ℓ 使得 cnt[0..ℓ] 全部 >0
-    int ell = 0;
-    while(ell <= n && cnt[ell] > 0) {
-        ell++;
-    }
-    // 最终 ell 是第一个 cnt[ell]==0 的位置，
-// 因此合法的 M = 1..ell-1
-    ell = max(ell-1, 0);
-
-    // 6) 计算前缀乘积 P[M] 并累加 S_nonconst
-    ll prefix = 1;
-    ll S_nonconst = 0;
-    for(int M = 0; M <= ell; M++){
-        prefix = (prefix * f[M]) % MOD;
-        if(M >= 1){
-            S_nonconst = (S_nonconst + prefix) % MOD;
-        }
-    }
-
-    // 7) 最终答案
-    ll ans = (S_const + S_nonconst) % MOD;
-    cout << ans << "\n";
+    cout << ans << endl;
     return 0;
 }

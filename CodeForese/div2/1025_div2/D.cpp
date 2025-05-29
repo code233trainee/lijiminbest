@@ -8,7 +8,6 @@ using namespace std;
 using ll = long long;
 const int maxn = 2e6 + 5;
 int n, m, q;
-bool vis[maxn];
 int dis[maxn][2];
 vector<int> e[maxn];
 const int M = 2e9 + 8; // 大于2e9;
@@ -93,7 +92,7 @@ void solve()
         dis[i][0] = dis[i][1] = M;
     }
     dis[1][0] = 0;
-    dis[1][1] = M;
+    dis[1][1] = M;// 一个不可能的数
     bfs(1);
 
     // for(int i = 1; i <= n; i++)
