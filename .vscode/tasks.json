@@ -7,6 +7,7 @@
             "args": [
                 "/Zi",
                 "/EHsc",
+                "/std:c++17",
                 "/nologo",
                 "/Fe${fileDirname}\\${fileBasenameNoExtension}.exe",
                 "${file}"
@@ -27,6 +28,7 @@
             "args": [
                 "/Zi",
                 "/EHsc",
+                "/std:c++17",
                 "/nologo",
                 "/Fe${fileDirname}\\${fileBasenameNoExtension}.exe",
                 "${file}"
@@ -47,6 +49,7 @@
             "args": [
                 "/Zi",
                 "/EHsc",
+                "/std:c++17",
                 "/nologo",
                 "/Fe${fileDirname}\\${fileBasenameNoExtension}.exe",
                 "${file}"
